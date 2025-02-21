@@ -6,7 +6,7 @@
   <link href="https://xcoding422.github.io/atom.xml" rel="self"/>
   
   <link href="https://xcoding422.github.io/"/>
-  <updated>2025-01-27T13:18:29.625Z</updated>
+  <updated>2025-02-21T11:34:16.248Z</updated>
   <id>https://xcoding422.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>更新通知</title>
+    <link href="https://xcoding422.github.io/2025/02/21/update/"/>
+    <id>https://xcoding422.github.io/2025/02/21/update/</id>
+    <published>2025-02-21T11:29:19.332Z</published>
+    <updated>2025-02-21T11:34:16.248Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>本网站历时13天完成系统更换以及服务器更新.</strong></p><p>更新具体内容:</p><hr><blockquote><p>js 加载完才显示聊天按钮<br>移除 Pangu<br>添加结构化数据支持<br>添加 avif 到支持的图片格式列表<br>更新 lazyload 配置，支持原生 lazyload 功能<br>代码优化<br>优化 pageType 逻辑<br>代码字体先 fallback 到 monospace 再到中文和 sans-serif<br>更新 plugins.yml 中的依赖版本至最新<br>优化 aside_archives，改进性能和可读性<br>改善 inlineImg 和 timeline 标签的文档，优化时间线逻辑<br>更新 gallery 标签以支持额外参数，优化图片显示逻辑<br>优化随机封面过滤器逻辑，避免连续重复<br>最新评论限制显示 1-10 条之间</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;本网站历时13天完成系统更换以及服务器更新.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;更新具体内容:&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;js 加载完才显示聊天按钮&lt;br&gt;移除 Pangu&lt;br&gt;添加结构化数据支持&lt;br&gt;添加 avif 到支持的图片格</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>关站通知</title>
