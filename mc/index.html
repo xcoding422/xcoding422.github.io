@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>红狼 | 得吃王6666 | 红狼 | 得吃王6666</title><meta name="author" content="Xcoding422"><meta name="copyright" content="Xcoding422"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Minecraft 1.8.8 		 		 		 		 		 		 		 			body{ 					  position:fixed; 					  width: 100%; 					  height: 100%; 					  padding: 0; 					  margin: 0; 					  background-color:rgb(51, 51,">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>红狼 | 得吃王6666 | 红狼 | 得吃王6666</title><meta name="author" content="Xcoding422"><meta name="copyright" content="Xcoding422"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="EaglercraftX 1.8 		 		 		 		 		 		 		 		 			&quot;use strict&quot;; 			window.addEventListener(&quot;load&quot;, function() { 				if(window.location.href.indexOf(&quot;file:&quot;) &#x3D;&#x3D;&#x3D; 0) { 					alert(&quot;HTTP pleas">
 <meta property="og:type" content="website">
 <meta property="og:title" content="红狼 | 得吃王6666">
 <meta property="og:url" content="https://xcoding422.github.io/mc/index.html">
 <meta property="og:site_name" content="红狼 | 得吃王6666">
-<meta property="og:description" content="Minecraft 1.8.8 		 		 		 		 		 		 		 			body{ 					  position:fixed; 					  width: 100%; 					  height: 100%; 					  padding: 0; 					  margin: 0; 					  background-color:rgb(51, 51,">
+<meta property="og:description" content="EaglercraftX 1.8 		 		 		 		 		 		 		 		 			&quot;use strict&quot;; 			window.addEventListener(&quot;load&quot;, function() { 				if(window.location.href.indexOf(&quot;file:&quot;) &#x3D;&#x3D;&#x3D; 0) { 					alert(&quot;HTTP pleas">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xcoding422.github.io/img/butterfly-icon.jpg">
-<meta property="article:published_time" content="2025-02-09T11:43:15.809Z">
-<meta property="article:modified_time" content="2025-02-05T07:02:43.251Z">
+<meta property="article:published_time" content="2025-03-01T10:38:48.556Z">
+<meta property="article:modified_time" content="2025-02-23T05:38:16.000Z">
 <meta property="article:author" content="Xcoding422">
 <meta property="article:tag" content="Blog, Hexo">
 <meta name="twitter:card" content="summary">
@@ -170,132 +170,55 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 		<meta name="description" content="Play minecraft 1.8 in your browser" />
 		<meta name="keywords" content="eaglercraft, eaglercraftx, minecraft, 1.8, 1.8.8" />
-		<title>Minecraft 1.8.8</title>
-		<meta property="og:locale" content="zh-CN" />
+		<title>EaglercraftX 1.8</title>
+		<meta property="og:locale" content="en-US" />
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Minecraft 1.8.8" />
-		<meta property="og:description" content="Play minecraft 1.8.8 in your browser" />
+		<meta property="og:title" content="EaglercraftX 1.8" />
+		<meta property="og:description" content="Play minecraft 1.8 in your browser" />
 		<meta property="og:image" content="favicon.png" />
 		<link type="image/png" rel="shortcut icon" href="favicon.png" />
-		<style type="text/css">
-			body{
-					  position:fixed;
-					  width: 100%;
-					  height: 100%;
-					  padding: 0;
-					  margin: 0;
-					  background-color:rgb(51, 51, 51);
-					  overflow: hidden;
-			  }
-			  #main{ 
-						  width:560px;
-						  height:320px;
-			   }
-			   @media screen and (orientation: portrait){ 
-							#main{  
-										position:absolute;
-										width: 100vh;
-										height: 100vw;
-										top: 0;
-										left: 100vw;
-										-webkit-transform:rotate(90deg);
-										-moz-transform: rotate(90deg);
-										-ms-transform: rotate(90deg);
-										 transform:rotate(90deg);
-										 transform-origin: 0% 0%;
-										 }  
-				  }
-				  @media screen and (orientation: landscape) { 
-							#main {
-										position:absolute;
-										top:0;
-										left:0;
-										width: 100vw;
-										height: 100vh;
-										}
-					}
-		</style>
 		<script type="text/javascript" src="classes.js"></script>
 		<script type="text/javascript">
-			//main function to load eaglercraftx
 			"use strict";
-			
-			//wechat fix for landscape mode on android devices (not working)
-			document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-				WeixinJSBridge.invoke('setPageOrientation', {
-					'orientation': 'landscape'});}, false);
-
-			//load eaglercraftx after page is loaded (to allow the page to render first)	
 			window.addEventListener("load", function() {
-				//check if the page is loaded from a file:// url (not allowed) and show an alert if it is
-				if(window.location.href.indexOf("file:") === 0) {alert("请用nginx部署");}
-				
-				//check if the browser is supported
-				else if(!window.WebSocket) {alert("请更换支持WebSocket的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getParameter) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getExtension) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getSupportedExtensions) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getShaderPrecisionFormat) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getShaderInfoLog) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getShaderSource) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getProgramInfoLog) {alert("请更换支持WebGL的浏览器");}
-
-				//check if the browser is supported
-				else if(!window.WebGLRenderingContext.prototype.getProgramParameter) {alert("请更换支持WebGL的浏览器");}
-
-				else {
-					//load eaglercraftx
+				if(window.location.href.indexOf("file:") === 0) {
+					alert("HTTP please, do not open this file locally, run a local HTTP server and load it via HTTP");
+				}else {
+					
+					// %%%%%%%%% launch options %%%%%%%%%%%%
+					
 					var relayId = Math.floor(Math.random() * 3);
-					//set options for eaglercraftx
 					window.eaglercraftXOpts = {
-						//demomode is disabled by default, set to true to enable demo mode (no login required)
 						demoMode: false,
 						container: "game_frame",
 						assetsURI: "assets.epk",
 						localesURI: "lang/",
 						worldsDB: "worlds",
-						servers: [],
-						relays: 
-						[
+						servers: [
+							/* example: { addr: "ws://localhost:8081/", name: "Local test server" } */
+						],
+						relays: [
 							{ addr: "wss://relay.deev.is/", comment: "lax1dude relay #1", primary: relayId == 0 },
 							{ addr: "wss://relay.lax1dude.net/", comment: "lax1dude relay #2", primary: relayId == 1 },
-							{ addr: "wss://relay.shhnowisnottheti.me/", comment: "ayunami relay #1", primary: relayId == 2 },
-						],
+							{ addr: "wss://relay.shhnowisnottheti.me/", comment: "ayunami relay #1", primary: relayId == 2 }
+						]
 					};
 					
-					//join server from query string (if any)
+					// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+					
 					var q = window.location.search;
-					if((typeof q === "string") && q[0] === "?" && (typeof window.URLSearchParams !== "undefined")) 
-					{
+					if((typeof q === "string") && q[0] === "?" && (typeof window.URLSearchParams !== "undefined")) {
 						q = new window.URLSearchParams(q);
 						var s = q.get("server");
 						if(s) window.eaglercraftXOpts.joinServer = s;
 					}
-					//load main function after 1 second to allow the page to render first (fixes black screen on some devices) 
+					
 					main();
 					
 				}
 			});
 		</script>
 	</head>
-	<!--use css to set background--> 
 	<body style="margin:0px;width:100%;height:100%;overflow:hidden;background-color:black;" id="game_frame">
 	</body>
 </html></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xcoding422</div><div class="author-info-description">What can I say?</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xcoding422"><i class="fab fa-github"></i><span>Github 开源</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">三角洲行动搜索[得吃王6666]</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/21/update/" title="更新通知">更新通知</a><time datetime="2025-02-21T11:29:19.332Z" title="发表于 2025-02-21 19:29:19">2025-02-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/stop-services/" title="关站通知">关站通知</a><time datetime="2025-02-17T05:41:07.010Z" title="发表于 2025-02-17 13:41:07">2025-02-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/hello-world/" title="关于webmc计划">关于webmc计划</a><time datetime="2025-02-17T04:53:18.076Z" title="发表于 2025-02-17 12:53:18">2025-02-17</time></div></div></div></div><div class="card-widget card-archives">
@@ -317,4 +240,4 @@
         </li>
       
     </ul>
-  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">3</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-02-21T11:34:43.618Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2025 By Xcoding422</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">CopyRight © 2014 Xcoding422</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">3</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-03-01T10:41:35.991Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2025 By Xcoding422</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">CopyRight © 2014 Xcoding422</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
