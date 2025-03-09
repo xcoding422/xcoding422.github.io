@@ -6,7 +6,7 @@
   <link href="https://xcoding422.github.io/atom.xml" rel="self"/>
   
   <link href="https://xcoding422.github.io/"/>
-  <updated>2025-02-21T11:34:16.248Z</updated>
+  <updated>2025-03-09T05:18:21.968Z</updated>
   <id>https://xcoding422.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Minecraft更新公告</title>
+    <link href="https://xcoding422.github.io/2025/03/09/mcstaus/"/>
+    <id>https://xcoding422.github.io/2025/03/09/mcstaus/</id>
+    <published>2025-03-09T05:12:07.835Z</published>
+    <updated>2025-03-09T05:18:21.968Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>Minecraft已完成全面汉化!</strong><br>新增了<strong>演示模式(Demo Mode)</strong>,以丰富游戏体验<br>内置PBR光源也已经升级.</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;Minecraft已完成全面汉化!&lt;/strong&gt;&lt;br&gt;新增了&lt;strong&gt;演示模式(Demo Mode)&lt;/strong&gt;,以丰富游戏体验&lt;br&gt;内置PBR光源也已经升级.&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>更新通知</title>
