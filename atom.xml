@@ -6,7 +6,7 @@
   <link href="https://xcoding422.github.io/atom.xml" rel="self"/>
   
   <link href="https://xcoding422.github.io/"/>
-  <updated>2025-03-09T05:21:06.521Z</updated>
+  <updated>2025-03-10T05:59:13.359Z</updated>
   <id>https://xcoding422.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>免费的LinuxONE服务器</title>
+    <link href="https://xcoding422.github.io/2025/03/10/linuxone/"/>
+    <id>https://xcoding422.github.io/2025/03/10/linuxone/</id>
+    <published>2025-03-10T05:52:27.712Z</published>
+    <updated>2025-03-10T05:59:13.359Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天来教大家白嫖一个免费的服务器,<strong>他不用海外的信用卡,只需要用电子邮箱即可</strong>!</p><p><strong>声明：这是一台S390X架构的服务器,很多软件都无法兼容.</strong></p><p>只教怎么创建服务器,不教ssh和链接方法,自行搜索!</p><p>服务器详细信息:</p><p><strong>OS: Ubuntu 22.04.1 LTS s390x</strong></p><p><strong>CPU: 8561 (2) @ 5.200GHz</strong></p><p><strong>Memory: 4GB</strong></p><p><strong>诚意也是非常到位</strong></p><p>准备:一个电子邮箱</p><p>访问<a href="https://linuxone.cloud.marist.edu/">linuxone官网</a>.点击Register,然后按照图片内容填写.接着到邮件去激活.</p><p>点击Vistual Servers.点击Create,并按你的需要填写.然后享受这台服务器吧!</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;今天来教大家白嫖一个免费的服务器,&lt;strong&gt;他不用海外的信用卡,只需要用电子邮箱即可&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;声明：这是一台S390X架构的服务器,很多软件都无法兼容.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;只教怎么创建服务器,不教ssh和链接方法</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Blogger国内访问教程</title>
+    <link href="https://xcoding422.github.io/2025/03/10/blogger/"/>
+    <id>https://xcoding422.github.io/2025/03/10/blogger/</id>
+    <published>2025-03-10T05:42:04.102Z</published>
+    <updated>2025-03-10T05:58:12.901Z</updated>
+    
+    <content type="html"><![CDATA[<p>Blogger是一个非常有实力的免费博客平台,一贯保持无广告,不作恶的原则.它既<strong>免去了Hexo,Hugo麻烦的DEPLOY操作,也没有CSDN那样的广告</strong>.但是它在国内被墙了(来自东方长城的力量),因此我们可以绑定自定义域名来绕过防火墙.</p><p><del>(当然你可以选择是否开启广告)</del></p><p>你可以不用它提供的*.blogspot.com域名,绑定自定义域名.</p><p>下面,我将一步步教你怎么拥有自己的博客,而且在国内正常访问.</p><p>首先,访问<a href="//blogger.com">Blogger官网</a>,然后点击”新建博客”,使用Google账号登陆.</p><p>然后点击左上角,再点击新建博客.</p><p>输入你的网站显示的标题,点击”下一步”.</p><p>然后输入一个域名(Blogspot),再点击保存.</p><p>现在点击”查看博客”,就可以看到你的博客了,点击右上角新建博文写文章.</p><p>但是Blogger在国内被墙了,所以我们要绑定自定义域名.(以us.kg为例)</p><p>访问<a href="https://register.us.kg/">注册us.kg官网</a>,注册后,按照提示,进行KYC验证.</p><p>KYC验证通过后,访问<a href="https://register.us.kg/panel/register">获取域名</a><br>输入一个域名,点击check.</p><p>当看到这个页面时,不要关闭,也不要输入任何内容.</p><p>在<a href="https://dash.cloudflare.com/">Cloudflare</a>注册帐号,然后点击”添加域”,输入你的域名,点击”继续”.</p><p>选择”Free”计划,继续.</p><p>当看到这个页面时,不要关闭,也不要输入任何内容.</p><p>回到Blogger点击”设置”,找到”发布”,再点击”自定义域名”.</p><p>输入网址后,点击”保存”,不要关闭.(<strong>注意：要在网站前加”www.</strong>“)</p><p>回到Cloudflare,点击”添加记录”,类型选择”CNAME”,名称填写”www”,目标填写”ghs.google.com”.</p><p><strong>注意：一定要把代理关掉,否则无法验证！！！</strong></p><p>再添加一个(验证CNAME),名称填第二个CNAME所显示的名称,目标网域填第二个.</p><p>然后点击继续.</p><p>滑到下面”更新名称服务器”,复制两个<em>Cloudflare名称服务器.</em></p><p>回到DomainRegistration这个页面,把这两个Cloudflare名称服务器粘贴进去,然后点击Register.</p><p>显示success后关闭.</p><p>回到Blogger再点击一次保存,即可保存.</p><p>把这张图里的3个开关全部打开,然后等待15分钟后就可以了.</p><p>现在,你的博客就可以在国内访问了.</p><p>感谢观看！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Blogger是一个非常有实力的免费博客平台,一贯保持无广告,不作恶的原则.它既&lt;strong&gt;免去了Hexo,Hugo麻烦的DEPLOY操作,也没有CSDN那样的广告&lt;/strong&gt;.但是它在国内被墙了(来自东方长城的力量),因此我们可以绑定自定义域名来绕过防火墙.&lt;/</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Minecraft更新公告</title>
@@ -31,64 +73,6 @@
     <summary type="html">&lt;p&gt;&lt;strong&gt;Minecraft已完成全面汉化!&lt;/strong&gt;&lt;br&gt;新增了&lt;strong&gt;演示模式(Demo Mode)&lt;/strong&gt;,以丰富游戏体验.&lt;br&gt;内置PBR光影也已经升级.&lt;/p&gt;
 </summary>
       
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>更新通知</title>
-    <link href="https://xcoding422.github.io/2025/02/21/update/"/>
-    <id>https://xcoding422.github.io/2025/02/21/update/</id>
-    <published>2025-02-21T11:29:19.332Z</published>
-    <updated>2025-02-21T11:34:16.248Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>本网站历时13天完成系统更换以及服务器更新.</strong></p><p>更新具体内容:</p><hr><blockquote><p>js 加载完才显示聊天按钮<br>移除 Pangu<br>添加结构化数据支持<br>添加 avif 到支持的图片格式列表<br>更新 lazyload 配置，支持原生 lazyload 功能<br>代码优化<br>优化 pageType 逻辑<br>代码字体先 fallback 到 monospace 再到中文和 sans-serif<br>更新 plugins.yml 中的依赖版本至最新<br>优化 aside_archives，改进性能和可读性<br>改善 inlineImg 和 timeline 标签的文档，优化时间线逻辑<br>更新 gallery 标签以支持额外参数，优化图片显示逻辑<br>优化随机封面过滤器逻辑，避免连续重复<br>最新评论限制显示 1-10 条之间</p></blockquote>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;strong&gt;本网站历时13天完成系统更换以及服务器更新.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;更新具体内容:&lt;/p&gt;
-&lt;hr&gt;
-&lt;blockquote&gt;
-&lt;p&gt;js 加载完才显示聊天按钮&lt;br&gt;移除 Pangu&lt;br&gt;添加结构化数据支持&lt;br&gt;添加 avif 到支持的图片格</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>关站通知</title>
-    <link href="https://xcoding422.github.io/2025/02/17/stop-services/"/>
-    <id>https://xcoding422.github.io/2025/02/17/stop-services/</id>
-    <published>2025-02-17T05:41:07.010Z</published>
-    <updated>2025-01-27T13:18:29.625Z</updated>
-    
-    <content type="html"><![CDATA[<p>以下网站关停维护:[展开]</p><span id="more"></span><blockquote><p>xcoding422.github.io</p></blockquote><blockquote><p>xcoding422.netlify.app</p></blockquote><blockquote><p>xcoding422.pages.dev</p></blockquote><blockquote><p>xcoding422.vercel.app</p></blockquote><blockquote><p>xcoding422.us.kg</p></blockquote><p>将在<code>2025.1.28 00:00:00 ~ 2025.2.1 24:00:00</code>关停维护,并进行更新.</p><p>更新内容如下:</p><blockquote><p>1.新增人机验证,进入网站时,将进行验证,确保真人访问.</p></blockquote><blockquote><p>2.修复Minecraft Online的Eagtek插件与crash-viewer插件小概率无法连接服务器的问题</p></blockquote><blockquote><p>#3.新增Minecraft Online 1.8.8 WASM-GC插件(测试版,小概率会崩溃)</p></blockquote><p>很抱歉给你带来不便!</p><p>Xcoding422</p><p>2025年1月27日</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;以下网站关停维护:[展开]&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>关于webmc计划</title>
-    <link href="https://xcoding422.github.io/2025/02/17/hello-world/"/>
-    <id>https://xcoding422.github.io/2025/02/17/hello-world/</id>
-    <published>2025-02-17T04:53:18.076Z</published>
-    <updated>2025-01-27T13:18:40.176Z</updated>
-    
-    <content type="html"><![CDATA[<p>Minecraft是一个非常有实力的游戏(Bedrock&#x2F;Netease是一大坨)…[展开]</p><span id="more"></span><p>webmc计划,让更多的人在浏览器里玩到MC!运用了:</p><p><strong>远程虚拟机技术</strong>:<br>    1.RandomVistualMeahines<br>    2.RemoteDesktop<br>    3.noVNC<br>    4.Eagtek<br>    5.GameCrashReport</p><hr><blockquote><p><strong>模组</strong>:(ForgeLoader)<br>    1.myPersonInfoEditor<br>    2.easyUpdater<br>    3.Backuper<br>    4.RecordScreenshots<br>    5.easyMC<br>    6.EasyInvite<br>    7.mcShareWorldRelay<br>    8.OptFine<br>    9.VoiceChat</p></blockquote>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;Minecraft是一个非常有实力的游戏(Bedrock&amp;#x2F;Netease是一大坨)…[展开]&lt;/p&gt;</summary>
     
     
     
