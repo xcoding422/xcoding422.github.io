@@ -1,0 +1,591 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>React Hooks进阶：10个高效开发技巧 | 红狼 | 得吃王6666</title><meta name="author" content="Xcoding422"><meta name="copyright" content="Xcoding422"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="通过实际案例详解useEffect依赖管理、自定义Hook封装和性能优化策略">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Hooks进阶：10个高效开发技巧">
+<meta property="og:url" content="https://xcoding422.github.io/2024/03/21/ReactHooks%E8%BF%9B%E9%98%B610%E4%B8%AA%E9%AB%98%E6%95%88%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="红狼 | 得吃王6666">
+<meta property="og:description" content="通过实际案例详解useEffect依赖管理、自定义Hook封装和性能优化策略">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xcoding422.github.io/img/butterfly-icon.jpg">
+<meta property="article:published_time" content="2024-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-24T16:00:00.000Z">
+<meta property="article:author" content="Xcoding422">
+<meta property="article:tag" content="Blog, Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xcoding422.github.io/img/butterfly-icon.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "React Hooks进阶：10个高效开发技巧",
+  "url": "https://xcoding422.github.io/2024/03/21/ReactHooks%E8%BF%9B%E9%98%B610%E4%B8%AA%E9%AB%98%E6%95%88%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/",
+  "image": "https://xcoding422.github.io/img/butterfly-icon.jpg",
+  "datePublished": "2024-03-20T16:00:00.000Z",
+  "dateModified": "2024-03-24T16:00:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Xcoding422",
+      "url": "https://xcoding422.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/butterfly-icon.jpg"><link rel="canonical" href="https://xcoding422.github.io/2024/03/21/ReactHooks%E8%BF%9B%E9%98%B610%E4%B8%AA%E9%AB%98%E6%95%88%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'React Hooks进阶：10个高效开发技巧',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="红狼 | 得吃王6666" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/img/index.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/mc/"><i class="fa-fw fas fa-gamepad"></i><span> Minecraft</span></a></div></div></div></div><div class="post type-前端,React" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/index.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">红狼 | 得吃王6666</span></a><a class="nav-page-title" href="/"><span class="site-name">React Hooks进阶：10个高效开发技巧</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/mc/"><i class="fa-fw fas fa-gamepad"></i><span> Minecraft</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">React Hooks进阶：10个高效开发技巧</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-20T16:00:00.000Z" title="发表于 2024-03-21 00:00:00">2024-03-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-24T16:00:00.000Z" title="更新于 2024-03-25 00:00:00">2024-03-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="1-精准控制useEffect依赖"><a href="#1-精准控制useEffect依赖" class="headerlink" title="1. 精准控制useEffect依赖"></a>1. 精准控制useEffect依赖</h2><h3 id="黄金法则"><a href="#黄金法则" class="headerlink" title="黄金法则"></a>黄金法则</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误示例：缺少依赖</span></span><br><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">fetchData</span>(params.<span class="property">id</span>);</span><br><span class="line">&#125;, []);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确示例：完整声明依赖</span></span><br><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> controller = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line">  <span class="title function_">fetchData</span>(params.<span class="property">id</span>, &#123; <span class="attr">signal</span>: controller.<span class="property">signal</span> &#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> controller.<span class="title function_">abort</span>();</span><br><span class="line">&#125;, [params.<span class="property">id</span>]); <span class="comment">// ✅ 明确声明所有依赖项</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="依赖管理策略"><a href="#依赖管理策略" class="headerlink" title="依赖管理策略"></a>依赖管理策略</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>解决方案</th>
+<th>工具支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>频繁变化的依赖</td>
+<td>使用useReducer</td>
+<td>useReducer+dispatch</td>
+</tr>
+<tr>
+<td>对象&#x2F;数组依赖</td>
+<td>深度比较或拆解基本类型</td>
+<td>lodash.isEqual</td>
+</tr>
+<tr>
+<td>函数依赖</td>
+<td>useCallback包裹</td>
+<td>eslint-plugin-react-hooks</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-自定义Hook工程化实践"><a href="#2-自定义Hook工程化实践" class="headerlink" title="2. 自定义Hook工程化实践"></a>2. 自定义Hook工程化实践</h2><h3 id="数据请求Hook示例"><a href="#数据请求Hook示例" class="headerlink" title="数据请求Hook示例"></a>数据请求Hook示例</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> useFetch&lt;T&gt;(<span class="attr">url</span>: <span class="built_in">string</span>, <span class="attr">options</span>?: <span class="title class_">RequestInit</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [data, setData] = useState&lt;T | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> [error, setError] = useState&lt;<span class="title class_">Error</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> [loading, setLoading] = <span class="title function_">useState</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> abortController = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">fetchData</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(url, &#123;</span><br><span class="line">          ...options,</span><br><span class="line">          <span class="attr">signal</span>: abortController.<span class="property">signal</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">const</span> json = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span><br><span class="line">        <span class="title function_">setData</span>(json);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!abortController.<span class="property">signal</span>.<span class="property">aborted</span>) &#123;</span><br><span class="line">          <span class="title function_">setError</span>(err <span class="keyword">as</span> <span class="title class_">Error</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="title function_">setLoading</span>(<span class="literal">false</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">fetchData</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> abortController.<span class="title function_">abort</span>();</span><br><span class="line">  &#125;, [url, options]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; data, error, loading &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-性能优化三重奏"><a href="#3-性能优化三重奏" class="headerlink" title="3. 性能优化三重奏"></a>3. 性能优化三重奏</h2><h3 id="优化策略对比"><a href="#优化策略对比" class="headerlink" title="优化策略对比"></a>优化策略对比</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 未优化组件：每次渲染都重新计算</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">List</span>(<span class="params">&#123; items &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> filtered = items.<span class="title function_">filter</span>(...); <span class="comment">// 🚫 重复计算</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;filtered.map(...)&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 优化后组件：使用useMemo缓存</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">OptimizedList</span>(<span class="params">&#123; items &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> filtered = <span class="title function_">useMemo</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> items.<span class="title function_">filter</span>(...), </span><br><span class="line">    [items] <span class="comment">// ✅ 依赖项变更时才重新计算</span></span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;filtered.map(...)&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="渲染性能检测"><a href="#渲染性能检测" class="headerlink" title="渲染性能检测"></a>渲染性能检测</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用React DevTools的Profiler组件</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Profiler</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">onRender</span> = (<span class="params">id, phase, actualDuration</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;id&#125;</span> <span class="subst">$&#123;phase&#125;</span>耗时: <span class="subst">$&#123;actualDuration&#125;</span>ms`</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Profiler</span> <span class="attr">id</span>=<span class="string">&quot;Navigation&quot;</span> <span class="attr">onRender</span>=<span class="string">&#123;onRender&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Navigation</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Profiler</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-状态提升与上下文共享"><a href="#4-状态提升与上下文共享" class="headerlink" title="4. 状态提升与上下文共享"></a>4. 状态提升与上下文共享</h2><h3 id="Context优化模式"><a href="#Context优化模式" class="headerlink" title="Context优化模式"></a>Context优化模式</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建优化的Context</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">UserContext</span> = <span class="title class_">React</span>.<span class="property">createContext</span>&lt;&#123;</span><br><span class="line">  <span class="attr">user</span>: <span class="title class_">User</span>;</span><br><span class="line">  <span class="attr">update</span>: <span class="function">(<span class="params"><span class="attr">user</span>: <span class="title class_">User</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;&gt;(<span class="literal">null</span>!);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">UserProvider</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [user, setUser] = <span class="title function_">useState</span>(initialUser);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 使用useCallback避免Provider值不必要变化</span></span><br><span class="line">  <span class="keyword">const</span> updateUser = <span class="title function_">useCallback</span>(<span class="function">(<span class="params"><span class="attr">newUser</span>: <span class="title class_">User</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">setUser</span>(<span class="function"><span class="params">prev</span> =&gt;</span> (&#123; ...prev, ...newUser &#125;));</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> value = <span class="title function_">useMemo</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> (&#123; user, <span class="attr">update</span>: updateUser &#125;),</span><br><span class="line">    [user, updateUser]</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">UserContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;value&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">UserContext.Provider</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-复杂状态管理方案"><a href="#5-复杂状态管理方案" class="headerlink" title="5. 复杂状态管理方案"></a>5. 复杂状态管理方案</h2><h3 id="状态机实现示例"><a href="#状态机实现示例" class="headerlink" title="状态机实现示例"></a>状态机实现示例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useReducer &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  <span class="attr">status</span>: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">  <span class="attr">data</span>: <span class="literal">null</span>,</span><br><span class="line">  <span class="attr">error</span>: <span class="literal">null</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fetchReducer</span>(<span class="params">state, action</span>) &#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.<span class="property">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;FETCH_START&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> &#123; ...state, <span class="attr">status</span>: <span class="string">&#x27;pending&#x27;</span> &#125;;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;FETCH_SUCCESS&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">status</span>: <span class="string">&#x27;resolved&#x27;</span>, <span class="attr">data</span>: action.<span class="property">payload</span>, <span class="attr">error</span>: <span class="literal">null</span> &#125;;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;FETCH_FAILURE&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="attr">status</span>: <span class="string">&#x27;rejected&#x27;</span>, <span class="attr">data</span>: <span class="literal">null</span>, <span class="attr">error</span>: action.<span class="property">error</span> &#125;;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">useFetchMachine</span>(<span class="params">url</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [state, dispatch] = <span class="title function_">useReducer</span>(fetchReducer, initialState);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">dispatch</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;FETCH_START&#x27;</span> &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="title function_">fetch</span>(url)</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> <span class="title function_">dispatch</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;FETCH_SUCCESS&#x27;</span>, <span class="attr">payload</span>: data &#125;))</span><br><span class="line">      .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> <span class="title function_">dispatch</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;FETCH_FAILURE&#x27;</span>, error &#125;));</span><br><span class="line">  &#125;, [url]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="进阶技巧汇总"><a href="#进阶技巧汇总" class="headerlink" title="进阶技巧汇总"></a>进阶技巧汇总</h2><ol>
+<li><strong>依赖数组自动化</strong>：使用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/eslint-plugin-react-hooks">eslint-plugin-react-hooks</a>自动检测依赖缺失</li>
+<li><strong>Hook组合模式</strong>：将多个基础Hook组合成复合Hook<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">useWindowSize</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [size, setSize] = <span class="title function_">useState</span>(&#123; <span class="attr">width</span>: <span class="number">0</span>, <span class="attr">height</span>: <span class="number">0</span> &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">handler</span> = (<span class="params"></span>) =&gt; <span class="title function_">setSize</span>(&#123;</span><br><span class="line">      <span class="attr">width</span>: <span class="variable language_">window</span>.<span class="property">innerWidth</span>,</span><br><span class="line">      <span class="attr">height</span>: <span class="variable language_">window</span>.<span class="property">innerHeight</span></span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, handler);</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, handler);</span><br><span class="line">  &#125;, []);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>调试技巧</strong>：使用<a target="_blank" rel="noopener" href="https://github.com/welldone-software/why-did-you-render">useWhyDidYouUpdate</a>检测不必要的渲染</li>
+</ol>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过合理运用这些进阶技巧，开发者可以显著提升React应用的性能和可维护性。建议结合TypeScript类型系统，并持续关注React 19中即将推出的<a target="_blank" rel="noopener" href="https://github.com/reactjs/rfcs/pull/220">use优化</a>等新特性。</p>
+<blockquote>
+<p><strong>扩展阅读</strong>：  </p>
+<ul>
+<li>React官方Hooks API参考  </li>
+<li>《Hooks in Depth》视频课程  </li>
+<li>React Query状态管理库</li>
+</ul>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://xcoding422.github.io">Xcoding422</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://xcoding422.github.io/2024/03/21/ReactHooks%E8%BF%9B%E9%98%B610%E4%B8%AA%E9%AB%98%E6%95%88%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/">https://xcoding422.github.io/2024/03/21/ReactHooks%E8%BF%9B%E9%98%B610%E4%B8%AA%E9%AB%98%E6%95%88%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://xcoding422.github.io" target="_blank">红狼 | 得吃王6666</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.jpg" data-sites="qq,wechat,facebook,twitter,weibo"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/03/20/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E5%85%AD%E7%A7%8D%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="微服务架构中的六种核心设计模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">微服务架构中的六种核心设计模式</div></div><div class="info-2"><div class="info-item-1">前言在数字化转型浪潮中，微服务架构已成为构建复杂系统的首选方案。本文将深入解析六大核心设计模式，通过实际代码示例和架构图，展示如何构建高可用、可扩展的分布式系统。  服务发现模式服务发现模式是微服务架构中通信层的核心设计模式之一。它通过动态实例管理和健康检查机制，确保服务能够被可靠地发现和调用。 动态实例管理在微服务架构中，服务实例可能会动态增加或减少。服务发现模式通过注册中心（如 Eureka、Consul 或 Zookeeper）记录所有可用的服务实例，并实时更新其状态。 健康检查机制健康检查机制确保只有健康的服务实例能够被调用。注册中心会定期检查服务实例的健康状况，并将不可用的实例从注册表中移除。 客户端&#x2F;服务端发现 客户端发现：客户端直接查询注册中心获取服务实例列表，并通过负载均衡策略选择目标实例。 服务端发现：客户端请求被代理到服务端，服务端通过注册中心找到目标实例并转发请求。   API网关模式API 网关模式为微服务架构提供了一个统一的入口，简化了客户端与服务之间的交互。 统一入口API...</div></div></div></a><a class="pagination-related" href="/2024/03/22/%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83Docker%E9%83%A8%E7%BD%B2%E7%9A%847%E4%B8%AA%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7/" title="生产环境Docker部署的7个优化技巧"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">生产环境Docker部署的7个优化技巧</div></div><div class="info-2"><div class="info-item-1"> 1. 镜像瘦身三剑客多阶段构建实战123456789101112# 构建阶段FROM golang:1.20 AS builderWORKDIR /appCOPY . .RUN CGO_ENABLED=0 go build -o myapp .# 运行阶段FROM alpine:3.18RUN apk --no-cache add ca-certificatesWORKDIR /root/COPY --from=builder /app/myapp .CMD [&quot;./myapp&quot;]  基础镜像对比   镜像类型 大小 特点    ubuntu:22.04 72.8MB 完整系统工具   debian:12 54.3MB 精简版基础系统   alpine:3.18 5.7MB 最小化musl libc环境   scratch 0MB 空镜像（需静态编译）    2. 安全加固四要素安全配置示例12345678910111213FROM alpine:3.18# 创建非root用户RUN addgroup -S appgroup &amp;&amp;...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xcoding422</div><div class="author-info-description">What can I say?</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xcoding422"><i class="fab fa-github"></i><span>Github 开源</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">在线Minecraft全面支持中文汉化,上线了演示模式!</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%B2%BE%E5%87%86%E6%8E%A7%E5%88%B6useEffect%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">1. 精准控制useEffect依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99"><span class="toc-number">1.1.</span> <span class="toc-text">黄金法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">1.2.</span> <span class="toc-text">依赖管理策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%87%AA%E5%AE%9A%E4%B9%89Hook%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">2. 自定义Hook工程化实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%B7%E6%B1%82Hook%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">数据请求Hook示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B8%89%E9%87%8D%E5%A5%8F"><span class="toc-number">3.</span> <span class="toc-text">3. 性能优化三重奏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5%E5%AF%B9%E6%AF%94"><span class="toc-number">3.1.</span> <span class="toc-text">优化策略对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B"><span class="toc-number">3.2.</span> <span class="toc-text">渲染性能检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%8A%B6%E6%80%81%E6%8F%90%E5%8D%87%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E5%85%B1%E4%BA%AB"><span class="toc-number">4.</span> <span class="toc-text">4. 状态提升与上下文共享</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Context%E4%BC%98%E5%8C%96%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">Context优化模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A4%8D%E6%9D%82%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">5. 复杂状态管理方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%AE%9E%E7%8E%B0%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.1.</span> <span class="toc-text">状态机实现示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E6%8A%80%E5%B7%A7%E6%B1%87%E6%80%BB"><span class="toc-number">6.</span> <span class="toc-text">进阶技巧汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/23/article1/" title="深入理解JavaScript闭包">深入理解JavaScript闭包</a><time datetime="2025-03-23T00:00:00.000Z" title="发表于 2025-03-23 08:00:00">2025-03-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/23/article10/" title="使用TypeScript提升JavaScript代码质量">使用TypeScript提升JavaScript代码质量</a><time datetime="2025-03-23T00:00:00.000Z" title="发表于 2025-03-23 08:00:00">2025-03-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/23/article11/" title="理解数据库事务">理解数据库事务</a><time datetime="2025-03-23T00:00:00.000Z" title="发表于 2025-03-23 08:00:00">2025-03-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/23/article12/" title="使用Python进行数据分析">使用Python进行数据分析</a><time datetime="2025-03-23T00:00:00.000Z" title="发表于 2025-03-23 08:00:00">2025-03-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/23/article13/" title="理解微服务架构">理解微服务架构</a><time datetime="2025-03-23T00:00:00.000Z" title="发表于 2025-03-23 08:00:00">2025-03-23</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2025 By Xcoding422</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">CopyRight © 2014 Xcoding422</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天" style="display:none"><i class="fas fa-message"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const abcjsInit = () => {
+    const abcjsFn = () => setTimeout(() => {
+      document.querySelectorAll(".abc-music-sheet").forEach(ele => {
+        if (ele.children.length > 0) return
+        ABCJS.renderAbc(ele, ele.innerHTML, {responsive: 'resize'})
+      })
+    }, 100)
+    
+    typeof ABCJS === 'object' ? abcjsFn()
+      : btf.getScript('https://cdn.jsdelivr.net/npm/abcjs/dist/abcjs-basic-min.min.js').then(abcjsFn)
+  }
+
+  window.pjax ? abcjsInit() : window.addEventListener('load', abcjsInit)
+  btf.addGlobalFn('encrypt', abcjsInit, 'abcjs')
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'xcoding422/xcoding422.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '暂无评论'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'github-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const findTrueUrl = (array, ele) => {
+    Promise.all(array.map(item =>
+      fetch(item.url).then(resp => resp.json()).then(data => {
+        let urlArray = data.body ? data.body.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/ig) : []
+        if (!Array.isArray(urlArray) || urlArray.length === 0) {
+          urlArray = [`${data.html_url}`]
+        }
+        if (data.user.login === 'utterances-bot') {
+          return urlArray.pop()
+        } else {
+          return urlArray.shift()
+        }
+      })
+    )).then(res => {
+        array = array.map((i,index)=> {
+          return {
+            ...i,
+            url: res[index]
+          }
+        })
+
+        btf.saveToLocal.set(keyName, JSON.stringify(array), 10/(60*24))
+        generateHtml(array, ele)
+    });
+  }
+
+  const getComment = ele => {
+    fetch('https://api.github.com/repos/xcoding422/xcoding422.github.io/issues/comments?sort=updated&direction=desc&per_page=6&page=1',{
+      "headers": {
+        Accept: 'application/vnd.github.v3.html+json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const githubArray = data.map(item => {
+          return {
+            'avatar': item.user.avatar_url,
+            'content': changeContent(item.body_html || item.body),
+            'nick': item.user.login,
+            'url': item.issue_url,
+            'date': item.updated_at
+          }
+        })
+        findTrueUrl(githubArray, ele)
+      }).catch(e => {
+        console.error(e)
+        ele.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+  }
+  run(keyName, getComment)
+})</script><div class="aplayer no-destroy" data-id="2675181772" data-server="netease" data-type="song" data-fixed="true" data-autoplay="true"> </div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script>(() => {
+  window.ChatraID = 'ZMuctY3fgHXcy6YiP'
+  window.Chatra = window.Chatra || function() {
+    (window.Chatra.q = window.Chatra.q || []).push(arguments)
+  }
+
+  btf.getScript('https://call.chatra.io/chatra.js').then(() => {
+    const isChatBtn = true
+    const isChatHideShow = true
+
+    if (isChatBtn) {
+      const close = () => {
+        Chatra('minimizeWidget')
+        Chatra('hide')
+      }
+
+      const open = () => {
+        Chatra('openChat', true)
+        Chatra('show')
+      }
+
+      window.ChatraSetup = { startHidden: true }
+    
+      window.chatBtnFn = () => document.getElementById('chatra').classList.contains('chatra--expanded') ? close() : open()
+
+      document.getElementById('chat-btn').style.display = 'block'
+    } else if (isChatHideShow) {
+      window.chatBtn = {
+        hide: () => Chatra('hide'),
+        show: () => Chatra('show')
+      }
+    }
+  })
+})()</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
